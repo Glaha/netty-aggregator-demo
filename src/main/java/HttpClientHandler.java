@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import io.netty.util.internal.StringUtil;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
@@ -199,8 +200,12 @@ public class HttpClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        String host = System.getenv("GLAHA_AGGREGATOR_HOST");
+        String port = System.getenv("GLAHA_AGGREGATOR_PORT");
+        host = StringUtil.isNullOrEmpty(host)?"localhost":host;
+        port = StringUtil.isNullOrEmpty(port)?"8888":port;
         DefaultFullHttpRequest httpRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                HttpMethod.POST, "http://localhost:8888/");
+                HttpMethod.POST, "http://" + host + ":" + port);
         httpRequest.headers().set(HttpHeaderNames.HOST, "localhost");
         httpRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, message.length());
         httpRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
