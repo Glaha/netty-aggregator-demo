@@ -202,10 +202,12 @@ public class HttpClientHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         String host = System.getenv("GLAHA_AGGREGATOR_HOST");
         String port = System.getenv("GLAHA_AGGREGATOR_PORT");
+        String path = System.getenv("GLAHA_AGGREGATOR_PATH");
         host = StringUtil.isNullOrEmpty(host)?"localhost":host;
         port = StringUtil.isNullOrEmpty(port)?"8888":port;
+        path = StringUtil.isNullOrEmpty(path)?"/":path;
         DefaultFullHttpRequest httpRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                HttpMethod.POST, "http://" + host + ":" + port);
+                HttpMethod.POST, "http://" + host + ":" + port + path);
         httpRequest.headers().set(HttpHeaderNames.HOST, host);
         httpRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, message.length());
         httpRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
