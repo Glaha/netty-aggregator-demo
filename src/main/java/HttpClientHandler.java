@@ -206,7 +206,7 @@ public class HttpClientHandler extends ChannelInboundHandlerAdapter {
         port = StringUtil.isNullOrEmpty(port)?"8888":port;
         DefaultFullHttpRequest httpRequest = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
                 HttpMethod.POST, "http://" + host + ":" + port);
-        httpRequest.headers().set(HttpHeaderNames.HOST, "localhost");
+        httpRequest.headers().set(HttpHeaderNames.HOST, host);
         httpRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, message.length());
         httpRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
         ByteBuf buffer = getContentByteBuf();
